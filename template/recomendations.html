@@ -1,14 +1,58 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>SecurePassword</title>
+    
+</head> 
 <body>
-    {% for movie in movies %}
-    <h1>{{movie}}</h1>
-    {% endfor %}
+    
+    <div class="flex flex-1  flex-wrap p-5 gap-9">
+        {% for item1, item2 in mylist %} 
+        <div class="p-1 bg-white-100 rounded shadow-lg shadow-2xl  rounded-lg w-80 h-90">
+            <!--Card 1-->
+            <form hidden="true" action="recommendations" method="POST">
+                {% csrf_token %}
+                <input type="text" hidden="true" name="name" value="{{item1}}">
+                <input type="submit" id="recommendations-btn{{item1}}" name="movie_name">
+            </form>
+    
+                <div class="" >
+                  <div  class="md:flex md:justify-center font-bold px-2 py-2 text-center">
+                    <a href="javascript:;" onclick="document.getElementById('recommendations-btn{{item1}}').click();" class="action-item">Get Recommendations</a>
+                    <a title="Get Recommendations" href="" type="submit" name="recommendations"
+                    class="action-item"><svg class="h-8 w-8 text-purple-600"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" /></svg></a>
+                    
+     
+                    
+                  </div>
+    
+               <a  href="{{item2}}" target="_blank"> <img class="w-24 h-24  mx-auto  h-auto " style="image-rendering: pixelated;
+                " src="{{item2}}" alt="Mountain"></a>
+                
+                <div class="px-3  justify-center   flex flex-col items-center justify-center pt-8 py-3">
+    
+                    <div class="name  bold font-awesome text-xl mb-2 p-1 " style="-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;"> {{item1}}</div>
+                    <!-- password modal-->
+                    
+                </div>
+                
+            </div>
+      
+        </div>
+        {% endfor %}
+    </div>
+   
+    
+    
+
+    
 </body>
 </html>

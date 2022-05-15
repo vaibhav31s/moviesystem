@@ -77,3 +77,9 @@ def recommendations(request):
         print(mylist)
     context={ 'mylist': mylist}
     return render(request,'recomendations.html',context)
+
+def movieflix(request):
+    context = {
+                "passwords":'s',
+            }  
+    return render(request, 'movieFlix.html', context)

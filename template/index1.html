@@ -13,29 +13,62 @@
 </head> 
 <body>
 
-
-    <div class="wrapper">
-        <div class="search-input">
-            <form action="recommendations" role="form" method="POST">
-                {% csrf_token %}
-          <a href="" target="_blank" hidden></a>
-          
-          <input type="text" list ="input" name="name" placeholder="Type to search..">
-      
-           <datalist id="input"> {% for movie in movies %}
-               <option value ="{{movie}}">{{movie}}</option>
-               {% endfor %}
-          
-           </datalist>
-          
-        
-          <button type="submit"  name="movie_name" class="icon"><i class="fas fa-search"  ></i></button>
-        </form>
+    <div class="w-full m-0 p-0 bg-cover bg-bottom" style=" height: 60vh; max-height:460px;">
+        <div class="container max-w-4xl mx-auto pt-16 md:pt-11 text-center break-normal">
+            <!--Title-->
+                <p class="text-white font-extrabold text-3xl md:text-5xl">
+                    👻 Movie Recommender
+                </p>
+                <p class="text-xl md:text-2xl text-white-500">Welcome To all My Visitor</p>
+                <p class="text-xl md:text-2xl pt-11 text-neutral-200">Please Enter one Movie Which you liked in the past.
+So that we can give you recommendations.
+                </p>
         </div>
-      </div>
+        <div class="wrapper">
+            <div class="search-input">
+                <form action="recommendations" role="form" method="POST">
+                    {% csrf_token %}
+              <a href="" target="_blank" hidden></a>
+              
+              <input type="text" list ="input" name="name" placeholder="Type to search Movie in our   ">
+          
+               <datalist id="input"> {% for movie in movies %}
+                   <option value ="{{movie}}">{{movie}}</option>
+                   {% endfor %}
+              
+               </datalist>
+              
+            
+              <button type="submit"  name="movie_name" class="icon"><i class="fas fa-search"  ></i></button>
+            </form>
+            </div>
+          </div>
+
+    </div>
+    <h1 class="text-white font-extrabold text-3xl md:text-3xl">Top Movies Currently all over the Internet  </h1>
+    <section class="overflow-hidden text-gray-700 "> 
+       
+        <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-1">
+            
+          <div class="flex flex-wrap -m-1 md:-m-2">
+            {% for item1, item2 in top%}
+            <div class="flex flex-wrap w-1/5">
+              <div class="w-full p-1 md:p-2">
+                 
+                <img alt="gallery" class="block object-cover object-center w-full h-full rounded-lg"
+                  src="{{item2}}">
+                  
+              </div>
+            </div>
+            
+          
+        {% endfor %}
+          </div>
+        </div>
+    </section>
+    
        <!-- <script src="{% static 'suggestions.js' %}"></script>  -->
-     
-    <script src="{% static 'app.js' %}" defer></script>
+  
 
     
 </body>

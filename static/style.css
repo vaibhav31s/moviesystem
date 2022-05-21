@@ -6,7 +6,7 @@
   font-family: 'Poppins', sans-serif;
 }
 body{
-  background: #644bff;
+  background: #007add;
   padding: 0 20px;
 }
 ::selection{
@@ -15,7 +15,7 @@ body{
 }
 .wrapper{
   max-width: 450px;
-  margin: 150px auto;
+  margin: 50px auto;
 }
 .wrapper .search-input{
   background: #fff;
@@ -45,13 +45,13 @@ body{
   overflow-y: auto;
 }
 .search-input.active .autocom-box{
-  padding: 10px 8px;
+  padding: 1px 1px;
   opacity: 1;
   pointer-events: auto;
 }
 .autocom-box li{
   list-style: none;
-  padding: 8px 12px;
+  padding: 1px 1px;
   display: none;
   width: 100%;
   cursor: default;
@@ -72,6 +72,6 @@ body{
   text-align: center;
   line-height: 55px;
   font-size: 20px;
-  color: #644bff;
+  color: #e49c00;
   cursor: pointer;
 }

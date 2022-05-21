@@ -45,7 +45,7 @@ def index(request):
                 "movies":movies['title'].values,
             }  
     return render(request, 'index1.html', context)
-    
+
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US".format(movie_id)
     data = requests.get(url)
@@ -102,11 +102,30 @@ def recommendations(request):
     context={ 'mylist': mylist,'mylist2':mylist1}
     return render(request,'recomendations.html',context)
 
-def movieflix(request):
 
- 
-    print(list(movies))
+def topMovies():
+    url ="https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1"
+    data = requests.get(url)
+    data = data.json()
+    
+    list1 = []
+    list2 = []
+    for i in range(0,10):
+        list1.append(data['results'][i]['original_title'])
+        poster_path = data['results'][i]['poster_path']
+        full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+        list2.append(full_path)
+      
+   
+    print(list1)
+    print(list2)
+    print(type(list1))
+    return list1,list2
+
+def movieflix(request):
+    recommended_movie_names,recommended_movie_posters =  topMovies()
+    mylist = zip(recommended_movie_names, recommended_movie_posters)
     context = {
-                "passwords":'s',
+                "top":mylist,
             }  
-    return render(request, 'movieFlix.html', context)
+    return render(request, 'index1.html', context)

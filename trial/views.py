@@ -44,7 +44,7 @@ def index(request):
     context = {
                 "movies":movies['title'].values,
             }  
-    return render(request, 'index.html', context)
+    return render(request, 'index1.html', context)
     
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US".format(movie_id)
@@ -103,6 +103,9 @@ def recommendations(request):
     return render(request,'recomendations.html',context)
 
 def movieflix(request):
+
+ 
+    print(list(movies))
     context = {
                 "passwords":'s',
             }  

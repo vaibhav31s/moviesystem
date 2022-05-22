@@ -21,6 +21,7 @@
           <input type="text" list ="input" name="name" placeholder="Type to search..">
       
            <datalist id="input"> {% for movie in movies %}
+            <option value="{{movie}}" style="background-image:url(images/volvo.png);">
                <option value ="{{movie}}">{{movie}}</option>
                {% endfor %}
           

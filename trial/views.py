@@ -41,8 +41,10 @@ def product_details(request,id):
 
 
 def index(request):
+    recommended_movie_names,recommended_movie_posters =  topMovies()
+    mylist = zip(recommended_movie_names, recommended_movie_posters)
     context = {
-                "movies":movies['title'].values,
+                "movies":movies['title'].values,"top":mylist,
             }  
     return render(request, 'index1.html', context)
 

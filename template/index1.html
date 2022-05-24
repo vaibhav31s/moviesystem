@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Movie System</title>
+    <link rel="stylesheet" href="{% static 'abc.css' %}">
+
     <link rel="stylesheet" href="{% static 'style.css' %}">
     
 </head> 
@@ -47,24 +49,31 @@ So that we can give you recommendations.
     </div>
     <h1 class="text-white font-extrabold text-3xl md:text-3xl">Top Movies Currently all over the Internet  </h1>
     <section class="overflow-hidden text-gray-700 "> 
+      <div class="grid grid-cols-5 gap-9">
+        {% for item1, item2 in top %} 
+      
         
-        <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-1">
-            
-          <div class="flex flex-wrap -m-1 md:-m-2">
-            {% for item1, item2 in top%}
-            <div class="flex flex-wrap w-1/5 ">
-              <div class="w-full p-1 md:p-2">
-                 
-                <img alt="gallery" class="block object-cover object-center w-full h-full rounded-lg"
-                  src="{{item2}}">
-                  
+            <div class="image ">
+                <img src="{{item2}}" alt="">
+                <div class="details">
+                  <h2><span>{{item1}}</span></h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <div class="more">
+                    <a href="#" class="read-more">Read <span>More</span></a>
+                    <div class="icon-links">
+                      <a href="#"><i class="fas fa-heart"></i></a>
+                      <a href="#"><i class="fas fa-eye"></i></a>
+                      <a href="#"><i class="fas fa-paperclip"></i></a>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-          
+      
+       
+        
         {% endfor %}
-          </div>
-        </div>
+      
+    </div>
     </section>
     
        <!-- <script src="{% static 'suggestions.js' %}"></script>  -->

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Cards With Hover Effect</title>
+    <link rel="stylesheet" href="{% static 'abc.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+  </head>
+  <body>
+
+    <!--image card layout start-->
+    <div class="container">
+      <!--image row start-->
+     
+      
+        <!--image card start-->
+        
+    <div class="grid grid-cols-4">
+        {% for item1, item2 in top %} 
+      
+        
+            <div class="image ">
+                <img src="{{item2}}" alt="">
+                <div class="details">
+                  <h2><span>{{item1}}</span></h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <div class="more">
+                    <a href="#" class="read-more">Read <span>More</span></a>
+                    <div class="icon-links">
+                      <a href="#"><i class="fas fa-heart"></i></a>
+                      <a href="#"><i class="fas fa-eye"></i></a>
+                      <a href="#"><i class="fas fa-paperclip"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+      
+       
+        
+        {% endfor %}
+      
+    </div>
+        
+   
+    <!--image card layout end-->
+
+  </body>
+</html>
+      

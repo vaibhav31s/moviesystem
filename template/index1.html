@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Movie System</title>
     <link rel="stylesheet" href="{% static 'abc.css' %}">
+    <link rel="stylesheet" href="{% static 'movie.css' %}">
 
     <link rel="stylesheet" href="{% static 'style.css' %}">
     
@@ -49,31 +50,43 @@ So that we can give you recommendations.
     </div>
     <h1 class="text-white font-extrabold text-3xl md:text-3xl">Top Movies Currently all over the Internet  </h1>
     <section class="overflow-hidden text-gray-700 "> 
-      <div class="grid grid-cols-5 gap-9">
-        {% for item1, item2 in top %} 
-      
+      <div class="flex flex-wrap ">
         
-            <div class="image ">
-                <img src="{{item2}}" alt="">
-                <div class="details">
-                  <h2><span>{{item1}}</span></h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  <div class="more">
-                    <a href="#" class="read-more">Read <span>More</span></a>
-                    <div class="icon-links">
-                      <a href="#"><i class="fas fa-heart"></i></a>
-                      <a href="#"><i class="fas fa-eye"></i></a>
-                      <a href="#"><i class="fas fa-paperclip"></i></a>
-                    </div>
-                  </div>
-                </div>
+        {% for name, poster , rating ,overview, id1, genre  in top %} 
+          
+        <div class="movie basis-1/5">
+            <div class="genre-info">
+              <span class="label">Genre : </span>
+              {% for i in genre %}
+              <span class="pills">{{i}}</span>
+              {% endfor %}
+            </div>
+            <img src="{{poster}}" alt="{{name}}">
+      
+            <div class="movie-info">
+                <h3>{{name}}</h3>
+                <span class="orange">{{rating}}</span>
+            </div>
+              
+            <div class="overview">
+          
+                <h3>Overview</h3>
+                <p>{{overview}}
+                </p>
+                <br> 
+                <button class="know-more" id="{{id1}}">Know More</button>
+          
               </div>
+        </div>
+      {% endfor %}
       
-       
         
-        {% endfor %}
-      
-    </div>
+         
+          
+        
+        
+      </div>
+          
     </section>
     
        <!-- <script src="{% static 'suggestions.js' %}"></script>  -->
@@ -82,3 +95,32 @@ So that we can give you recommendations.
     
 </body>
 </html>
+
+
+
+<!-- 
+<div class="grid grid-cols-5 gap-9">
+  {% for item1, item2,item3,item4,item5,s in top %} 
+
+  
+      <div class="image ">
+          <img src="{{item2}}" alt="">
+          <div class="details">
+            <h2><span>{{item1}}</span></h2>
+            <p>{{item4}}</p>
+            <div class="more">
+              <a href="#" class="read-more">Read <span></span></a>
+              <div class="icon-links">
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-eye"></i></a>
+                <a href="#"><i class="fas fa-paperclip"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+ 
+  
+  {% endfor %}
+
+</div> -->

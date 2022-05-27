@@ -12,20 +12,30 @@
 </head> 
 <body>
     
-    <div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-">
+    <div class="min-w-screen  pt-5 pb-5 justify-between ">
   
-        <div class="py-3 sm:max-w-xl sm:mx-auto">
-          <div class="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-8 flex space-x-8">
-            {% for item1, item2, item3 in mylist2 %} 
+        <div class=" sm:max-w-xl sm:mx-auto">
+          <div class="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-2 flex space-x-8">
+            {% for item1, item2, genre in mylist2 %} 
             <div class="h-48 overflow-visible w-1/2">
                
                 <img class="rounded-3xl shadow-lg" src="{{item2}}" alt="">
                 
              </div>
             <div class="flex flex-col w-1/2 space-y-4">
+              <div class="genre-info">
+                <h2 class="label">Genre :
+                {% for i in genre %}
+                <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
+                 {{i}}
+                </button>
+              </h2>
+                {% endfor %}
+               
+              </div>
               <div class="flex justify-between items-start">
                 <h2 class="text-3xl font-bold">{{item1}}</h2>
-                <div class="bg-yellow-400 font-bold rounded-xl p-2">{{item3}}</div>
+                <div class="bg-yellow-400 font-bold rounded-xl p-2">rating</div>
               </div>
               <div> 
                 <div class="text-sm text-gray-400">Series</div>
@@ -41,25 +51,37 @@
       </div>
 
 
-
-    <div class="flex flex-1  flex-wrap p-5 gap-9">
-        {% for item1, item2 in mylist %} 
-        <div class="p-1 bg-white-100 rounded shadow-lg shadow-2xl  rounded-lg w-80 h-90">
+      <div class="container mx-auto my-6 lg:px-16 px-4">
+        <ul class="flex items-center leading-normal text-black-500 font-alt">
+          <li class=" bold font-awesome text-xl mb-2 p-1">Recommendations </li>
+         
+        </ul>
+      </div>
+    
+    <div class="flex   flex-wrap  mb-4 gap-20 justify-center">
+        {% for item1, item2, item3 in mylist %} 
+        <div class=" lg:w-1/5 bg-white-100 rounded shadow-lg shadow-2xl  rounded-lg w-140 h-90 cursor-pointer">
             <!--Card 1-->
             <form hidden="true" action="recommendations" method="POST">
                 {% csrf_token %}
                 <input type="text" hidden="true" name="name" value="{{item1}}">
                 <input type="submit" id="recommendations-btn{{item1}}" name="movie_name">
             </form>
-    
+            <div class="genre-info">
+              <h2 class="label">Genre : </h2>
+              {% for i in item3 %}
+              <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
+               {{i}}
+              </button>
+              {% endfor %}
+             
+            </div>
                 <div class="" >
                   <div  class="md:flex md:justify-center font-bold px-2 py-2 text-center">
                     <a href="javascript:;" onclick="document.getElementById('recommendations-btn{{item1}}').click();" class="action-item">Get Recommendations</a>
                     <a title="Get Recommendations" href="" type="submit" name="recommendations"
                     class="action-item"></a>
-                    
-     
-                    
+              
                   </div>
     
                <a  href="{{item2}}" target="_blank"> <img class="w-24 h-24  mx-auto  h-auto " style="image-rendering: pixelated;
@@ -79,9 +101,9 @@
         </div>
         {% endfor %}
     </div>
-   
-    
-    
+
+ 
+
 
     
 </body>

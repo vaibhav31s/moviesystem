@@ -2,5 +2,10 @@ static/tmdb_5000_credits.csv
 static/tmdb_5000_movies.csv
 movie_dict.pkl
 movies.pkl
+movies.pkl
+movie_dict.pkl
 similarity.pkl
-static/movies.pkl
+movie_dict.pkl
+movie_dict.pkl
+movie_dict.pkl
+

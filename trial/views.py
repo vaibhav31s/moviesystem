@@ -130,7 +130,7 @@ def recommend(movie):
     overviews=[]
     
     counter=0
-    for i in distances[1:10]:
+    for i in distances[1:9]:
         # fetch the movie poster
         movie_id = movies.iloc[i[0]].movie_id
         poster,backdrop,overview, rating =fetch_poster(movie_id)

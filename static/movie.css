@@ -5,8 +5,8 @@
 }
 
 :root{
-    --primary-color:#fbfbfb;
-    --secondary-color: #080808fb;
+    --primary-color:#22254b;
+    --secondary-color: #373b69;
 }
 
 body{
@@ -118,15 +118,15 @@ main{
     bottom:0;
     background-color: #fff;
     padding: 1rem;
-    max-height: 80%;
+    max-height: 90%;
     transform:translateY(101%);
     transition:transform 0.4s ease-in;
 }
 .overview p {
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
-  height: 10em; /* Fallback for non-webkit, line-height * 2 */
-  line-height: 1em;
+  height: 14em; /* Fallback for non-webkit, line-height * 2 */
+  line-height: 1.3em;
   -webkit-line-clamp: 4; /* if you change this, make sure to change the fallback line-height and height */
   -webkit-box-orient: vertical;
   overflow: hidden;

@@ -16,7 +16,7 @@
 </head> 
 <body>
 
-    <div class="w-full m-0 p-0 bg-cover bg-bottom" style=" height: 60vh; max-height:300px;">
+    <div class="w-full m-0 p-0 bg-cover bg-bottom" style=" height: 60vh; max-height:460px;">
         <div class="container max-w-4xl mx-auto pt-16 md:pt-11 text-center break-normal">
             <!--Title-->
                 <p class="text-white font-extrabold text-3xl md:text-5xl">
@@ -48,103 +48,7 @@ So that we can give you recommendations.
           </div>
 
     </div>
-    <div>
-      <div class="p-2">
-        <form onsubmit="return handleData()" method="post" action="genre">
-            {% csrf_token %}
-        
-        <div class="container">
-          <ul class="ks-cboxtags">
-            <li>
-              <input type="checkbox" id="28" value="28" name="tag[]">
-                  <label for="28"> Action</label>
-            </li>
-            <li>
-              <input type="checkbox" id="12" value="12" name="tag[]">
-                  <label for="12"> Animation</label>
-            </li>
-            <li>
-              <input type="checkbox" id="16" value="16"  name="tag[]">
-                  <label for="16"> Animation</label>
-            </li>
-            <li>
-              <input type="checkbox" id="35" value="35" name="tag[]">
-                  <label for="35"> Comedy</label>
-            </li>
-            <li>
-              <input type="checkbox" id="1" value="1" name="tag[]">
-                  <label for="1"> Drama</label>
-            </li>
-            <li>
-                <input type="checkbox" id="10751"  value="10751" name="tag[]">
-                <label for="10751"> Family</label>
-            </li>
-            <li>
-	  
-              <input type="checkbox" id="14"  value="14" name="Fantasy">
-              <label for="14"> Fantasy</label>
-            </li>
-            <li>
-	  
-              <input type="checkbox" id="14"  value="14" name="Fantasy">
-              <label for="Fantasy"> Fantasy</label>
-    </li>
-    <li>
-      <input type="checkbox" value="36" id="36" name="tag[]">
-          <label for="36"> History</label>
-    </li>
-    <li>
-      <input type="checkbox" value="27" id="27" name="tag[]">
-          <label for="27"> Horror</label>
-    </li>
-    <li>
-      <input type="checkbox" value="10402" id="10402" name="tag[]">
-          <label for="10402"> Music</label>
-    </li>
-    <li>
-      <input type="checkbox" value="9648" id="9648" name="tag[]">
-          <label for="9648"> Mystery</label>
-    </li>
-    <li>
-      <input type="checkbox" value="10749" id="10749" name="tag[]">
-          <label for="10749"> Romance</label>
-    </li>
-    <li>
-      <input type="checkbox" value="878" id="878" name="tag[]">
-          <label for="878"> Science Fiction</label>
-    </li>
-    <li>
-      <input type="checkbox" value="53" id="53" name="tag[]">
-          <label for="53"> Thriller</label>
-    </li>
-    <li>
-      <input type="checkbox" value="10770" id="10770" name="tag[]">
-          <label for="10770"> TV Movie</label>
-    </li>
-    <li>
-      <input type="checkbox" value="10752" id="10752" name="tag[]">
-          <label for="10752"> War</label>
-    </li>
-    <li>
-      <input type="checkbox" value="37" id="37" name="tag[]">
-          <label for="37"> Western</label>
-    </li>
-            
-      </ul>
-      <div>
-        <input type="submit" id="button-62" name="genres" value="Submit"/>
-        </div>
-        </div>
-        
-        </form>
-
-      </div>
-    
- 
-    </div>
-
     <h1 class="text-white font-extrabold text-3xl md:text-3xl">Top Movies Currently all over the Internet  </h1>
-    
     <section class="overflow-hidden text-gray-700 "> 
       <div class="flex flex-wrap ">
         
@@ -186,8 +90,100 @@ So that we can give you recommendations.
     </section>
     
        <!-- <script src="{% static 'suggestions.js' %}"></script>  -->
-  
+       {% if mylist2 %}
+       
 
+    <div class="min-w-screen  pt-5 pb-5 justify-between ">
+  
+        <div class=" sm:max-w-xl sm:mx-auto">
+          <div class="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-2 flex space-x-8">
+            {% for item1, item2, genre in mylist2 %} 
+            <div class="h-48 overflow-visible w-1/2">
+               
+                <img class="rounded-3xl shadow-lg" src="{{item2}}" alt="">
+                
+             </div>
+            <div class="flex flex-col w-1/2 space-y-4">
+              <div class="genre-info">
+                <h2 class="label">Genre :
+                {% for i in genre %}
+                <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
+                 {{i}}
+                </button>
+              </h2>
+                {% endfor %}
+               
+              </div>
+              <div class="flex justify-between items-start">
+                <h2 class="text-3xl font-bold">{{item1}}</h2>
+                <div class="bg-yellow-400 font-bold rounded-xl p-2">rating</div>
+              </div>
+              <div> 
+                <div class="text-sm text-gray-400">Series</div>
+                <div class="text-lg text-gray-800">2019</div>
+              </div>
+                <p class=" text-gray-400 max-h-40 overflow-y-hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="flex text-2xl font-bold text-a">Watch Movie</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+      </div>
+
+
+      <div class="container mx-auto my-6 lg:px-16 px-4">
+        <ul class="flex items-center leading-normal text-black-500 font-alt">
+          <li class=" bold font-awesome text-xl mb-2 p-1">Recommendations </li>
+         
+        </ul>
+      </div>
+    
+    <div class="flex   flex-wrap  mb-4 gap-20 justify-center">
+        {% for item1, item2, item3 in mylist %} 
+        <div class=" lg:w-1/5 bg-white-100 rounded shadow-lg shadow-2xl  rounded-lg w-140 h-90 cursor-pointer">
+            <!--Card 1-->
+            <form hidden="true" action="recommendations" method="POST">
+                {% csrf_token %}
+                <input type="text" hidden="true" name="name" value="{{item1}}">
+                <input type="submit" id="recommendations-btn{{item1}}" name="movie_name">
+            </form>
+            <div class="genre-info">
+              <h2 class="label">Genre : </h2>
+              {% for i in item3 %}
+              <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
+               {{i}}
+              </button>
+              {% endfor %}
+             
+            </div>
+                <div class="" >
+                  <div  class="md:flex md:justify-center font-bold px-2 py-2 text-center">
+                    <a href="javascript:;" onclick="document.getElementById('recommendations-btn{{item1}}').click();" class="action-item">Get Recommendations</a>
+                    <a title="Get Recommendations" href="" type="submit" name="recommendations"
+                    class="action-item"></a>
+              
+                  </div>
+    
+               <a  href="{{item2}}" target="_blank"> <img class="w-24 h-24  mx-auto  h-auto " style="image-rendering: pixelated;
+                " src="{{item2}}" alt="Mountain"></a>
+                
+                <div class="px-3  justify-center   flex flex-col items-center justify-center pt-8 py-3">
+    
+                    <div class="name  bold font-awesome text-xl mb-2 p-1 " style="-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;"> {{item1}}</div>
+                    <!-- password modal-->
+                    
+                </div>
+                
+            </div>
+      
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endif %}
     
 </body>
 </html>

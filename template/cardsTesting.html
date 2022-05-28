@@ -5,62 +5,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Image Cards With Hover Effect</title>
-    <link rel="stylesheet" href="{% static 'movie.css' %}">
+    <link rel="stylesheet" href="{% static 'movie1.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
   </head>
-  <body>
-<div>
 
- 
-</div>
-    <!--image card layout start-->
-    <div class="container">
-      <!--image row start-->
-     
-      
-        <!--image card start-->
-        
-    <div class="grid grid-cols-4 ">
-        
-      {% for name, poster , rating ,overview, id1, genre  in top %} 
-        
-      <div class="movie">
-        
-          <div class="genre-info">
-            <span class="label">Genre : </span>
-            {% for i in genre %}
-            <span class="pills">{{i}}</span>
-            {% endfor %}
+    <section
+      class="bg-gray-900 h-screen flex justify-center items-center gap-x-16 text-white"
+    >  {% for name, poster , rating ,overview, id1, genre  in top %} 
+      <div
+        class="w-[300px] h-[420px] bg-transparent cursor-pointer group perspective"
+      >
+        <div
+          class="relative preserve-3d group-hover:my-rotate-y-180 w-full h-full duration-1000"
+        >
+          <div class="absolute backface-hidden border-2 w-full h-full">
+            <img src="{{poster}}" class="w-full h-full" />
           </div>
-          <img src="{{poster}}" alt="{{name}}">
-    
-          <div class="movie-info">
-              <h3>{{name}}</h3>
-              <span class="orange">{{rating}}</span>
+          <div
+            class="absolute my-rotate-y-180 backface-hidden w-full h-full bg-gray-100 overflow-hidden"
+          >
+            <div
+              class="text-center flex flex-col items-center justify-center h-full text-gray-800 px-2 pb-24"
+            >
+              <h1 class="text-3xl font-semibold">The King's Man</h1>
+              <p class="my-2">{{rating}}</p>
+              <p>
+               {{overview}}
+              </p>
+              <button
+                class="bg-teal-500 px-6 py-2 font-semibold text-white rounded-full absolute -bottom-20 delay-500 duration-1000 group-hover:bottom-20 scale-0 group-hover:scale-125"
+              >
+                Watch Now
+              </button>
+            </div>
           </div>
-            
-        <div class="overview">
-            
-              <h3>Overview</h3>
-              <p>{{overview}}</p>
-              
-              <br> 
-              <button class="know-more" id="{{id1}}">Know More</button>
-        
-            </div> 
-      </div>
-    {% endfor %}
-    
-      
-       
-        
-        
-      
-    </div>
-        
-   
-    <!--image card layout end-->
+        </div>
+      </div>    {% endfor %}
+    </section>
 
   </body>
 </html>

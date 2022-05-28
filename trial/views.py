@@ -173,8 +173,8 @@ def movieflix(request):
 
 def index(request):
     recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies()
-    mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
+    topMoviess = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
     context = {
-                "movies":movies['title'].values,"top":mylist,
+                "movies":movies['title'].values,"top":topMoviess,
             }  
     return render(request, 'index1.html', context)

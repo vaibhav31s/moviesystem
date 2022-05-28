@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$xch_j^%4epq9@vd*!+wh&z)eev#hbs0s1pe)ekas+4oxx!5+x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['movieflex.azurewebsites.net']
+ALLOWED_HOSTS = ['movieflex.azurewebsites.net','127.0.0.1']
 
 
 # Application definition

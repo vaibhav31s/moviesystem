@@ -27,5 +27,8 @@ urlpatterns = [
     path('product/',trial.views.product_list,name='product'),
     path('product/<id>',trial.views.product_details,name='product_details'),
     url('recommendations',views.recommendations,name='recommendations'),
-    url('movieflix',views.movieflix,name='movieflix')
+    url('movieflix',views.movieflix,name='movieflix'),
+    url('genre',views.genre,name='genre'),
+    path('genre/',views.genre,name='genre'),
+    
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/b7f415e2-cbf0-40ce-9291-347b05078b62/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/movieflex",
+    "appService.deploySubpath": "."
+}

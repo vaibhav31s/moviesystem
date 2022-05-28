@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Cards With Hover Effect</title>
+    <link rel="stylesheet" href="{% static 'movie.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+  </head>
+  <body>
+<div>
+
+ 
+</div>
+    <!--image card layout start-->
+    <div class="container">
+      <!--image row start-->
+     
+      
+        <!--image card start-->
+        
+    <div class="grid grid-cols-4 ">
+        
+      {% for name, poster , rating ,overview, id1, genre  in top %} 
+        
+      <div class="movie">
+        
+          <div class="genre-info">
+            <span class="label">Genre : </span>
+            {% for i in genre %}
+            <span class="pills">{{i}}</span>
+            {% endfor %}
+          </div>
+          <img src="{{poster}}" alt="{{name}}">
+    
+          <div class="movie-info">
+              <h3>{{name}}</h3>
+              <span class="orange">{{rating}}</span>
+          </div>
+            
+        <div class="overview">
+            
+              <h3>Overview</h3>
+              <p>{{overview}}</p>
+              
+              <br> 
+              <button class="know-more" id="{{id1}}">Know More</button>
+        
+            </div> 
+      </div>
+    {% endfor %}
+    
+      
+       
+        
+        
+      
+    </div>
+        
+   
+    <!--image card layout end-->
+
+  </body>
+</html>
+      

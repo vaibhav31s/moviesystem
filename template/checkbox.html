@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'abc.css' %}">
+    <link rel="stylesheet" href="{% static 'movie.css' %}">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Document</title>
+</head>
+
+
+<body>
+      <div class="p-2">
+        <form onsubmit="return handleData()" method="post" action="genre">
+            {% csrf_token %}
+        <div>
+          
+            <!-- <input type="checkbox" value="28" name="tag[]" name="28">
+            <label for="Action"> Action</label>
+            <input type="checkbox" value="12" name="tag[]" name="Animation">
+            <label for="Animation"> Animation</label>
+            <input type="checkbox" value="16"  name="tag[]" name="Animation">
+            <label for="Animation"> Animation</label>
+
+            <input type="checkbox" value="35" name="tag[]" name="Comedy">
+            <label for="Comedy"> Comedy</label>
+            <input type="checkbox" value="28" name="tag[]" name="Drama">
+            <label for="Drama"> Drama</label>
+            <input type="checkbox" value="10751"  name="tag[]" name="Family">
+            <label for="Family"> Family</label>
+            
+            <input type="checkbox" value="14" name="tag[]" name="Fantasy">
+            <label for="Fantasy"> Fantasy</label>
+            <input type="checkbox" value="36" name="tag[]" name="History">
+            <label for="History"> History</label>
+            <input type="checkbox" value="27"  name="tag[]" name="Horror">
+            <label for="Horror"> Horror</label>
+            
+            <input type="checkbox" value="10402" name="tag[]" name="Music">
+            <label for="Music"> Music</label>
+            <input type="checkbox" value="9648" name="tag[]" name="Mystery">
+            <label for="Mystery"> Mystery</label>
+            <input type="checkbox" value="10749"  name="tag[]" name="Romance">
+            <label for="Romance"> Romance</label>
+            
+            <input type="checkbox" value="878" name="tag[]" name="Science Fiction">
+            <label for="Science Fiction"> Science Fiction</label><br>
+            <input type="checkbox" value="9648" name="tag[]" name="Mystery">
+            <label for="Mystery"> Mystery</label><br>
+            <input type="checkbox" value="10770"  name="tag[]" name="TV Movie">
+            <label for="TV Movie"> TV Movie</label><br>
+            
+            <input type="checkbox" value="53" name="tag[]" name="Thriller">
+            <label for="Thriller"> Thriller</label><br>
+            <input type="checkbox" value="10752" name="tag[]" name="War">
+            <label for="War"> War</label><br>
+            <input type="checkbox" value="37"  name="tag[]" name="Western">
+            <label for="Western"> Western</label><br> -->
+
+
+        </div>
+        <div class="container">
+          <ul class="ks-cboxtags">
+            <li>
+              <input type="checkbox" id="28" value="28" name="tag[]">
+                  <label for="28"> Action</label>
+            </li>
+            <li>
+              <input type="checkbox" id="12" value="12" name="tag[]">
+                  <label for="12"> Animation</label>
+            </li>
+            <li>
+              <input type="checkbox" id="16" value="16"  name="tag[]">
+                  <label for="16"> Animation</label>
+            </li>
+            <li>
+              <input type="checkbox" id="35" value="35" name="tag[]">
+                  <label for="35"> Comedy</label>
+            </li>
+            <li>
+              <input type="checkbox" id="1" value="1" name="tag[]">
+                  <label for="1"> Drama</label>
+            </li>
+            <li>
+                <input type="checkbox" id="10751"  value="10751" name="tag[]">
+                <label for="10751"> Family</label>
+            </li>
+            <li>
+	  
+              <input type="checkbox" id="14"  value="14" name="Fantasy">
+              <label for="14"> Fantasy</label>
+            </li>
+            <li>
+	  
+              <input type="checkbox" id="14"  value="14" name="Fantasy">
+              <label for="Fantasy"> Fantasy</label>
+    </li>
+    <li>
+      <input type="checkbox" value="36" id="36" name="tag[]">
+          <label for="36"> History</label>
+    </li>
+    <li>
+      <input type="checkbox" value="27" id="27" name="tag[]">
+          <label for="27"> Horror</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10402" id="10402" name="tag[]">
+          <label for="10402"> Music</label>
+    </li>
+    <li>
+      <input type="checkbox" value="9648" id="9648" name="tag[]">
+          <label for="9648"> Mystery</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10749" id="10749" name="tag[]">
+          <label for="10749"> Romance</label>
+    </li>
+    <li>
+      <input type="checkbox" value="878" id="878" name="tag[]">
+          <label for="878"> Science Fiction</label>
+    </li>
+    <li>
+      <input type="checkbox" value="53" id="53" name="tag[]">
+          <label for="53"> Thriller</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10770" id="10770" name="tag[]">
+          <label for="10770"> TV Movie</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10752" id="10752" name="tag[]">
+          <label for="10752"> War</label>
+    </li>
+    <li>
+      <input type="checkbox" value="37" id="37" name="tag[]">
+          <label for="37"> Western</label>
+    </li>
+            
+      </ul>
+      <div>
+        <input type="submit" id="button-62" name="genres" value="Submit"/>
+        </div>
+        </div>
+        
+        </form>
+
+      </div>
+    
+ 
+      <section class="overflow-hidden text-gray-700 "> 
+        <div class="flex flex-wrap ">
+          
+          {% for name, poster , rating ,overview, id1, genre  in top %} 
+            
+          <div class="movie basis-1/5">
+              <div class="genre-info">
+                <span class="label">Genre : </span>
+                {% for i in genre %}
+                <span class="pills">{{i}}</span>
+                {% endfor %}
+              </div>
+              <img src="{{poster}}" alt="{{name}}">
+        
+              <div class="movie-info">
+                  <h3>{{name}}</h3>
+                  <span class="orange">{{rating}}</span>
+              </div>
+                
+              <div class="overview">
+            
+                  <h3>Overview</h3>
+                  <p>{{overview}}
+                  </p>
+                  <br> 
+                  <button class="know-more" id="{{id1}}">Know More</button>
+            
+                </div>
+          </div>
+        {% endfor %}
+        
+          
+           
+            
+          
+          
+        </div>
+            
+      </section>
+
+</body>
+</html>
+
+<!-- <div class="row">
+  {% for m in top.results %}
+       
+  <div class="movie basis-1/5">
+      <div class="genre-info">
+        <span class="label">Genre : </span>
+ 
+      {% for i in m.genre_ids %}
+         
+         
+      {% endfor %}
+      </div>
+      <img src="https://image.tmdb.org/t/p/w200{{ m.poster_path }}" alt="{{name}}">
+
+      <div class="movie-info">
+          <h3>{{ m.title }}</h3>
+          <span class="orange">{{ m.rating }}</span>
+      </div>
+        
+      <div class="overview">
+    
+          <h3>Overview</h3>
+          <p>{{m.overview}}
+          </p>
+          <br> 
+          <button class="know-more" id="{{id1}}">Know More</button>
+    
+        </div>
+  </div>
+   
+  {% endfor %}
+</div> -->

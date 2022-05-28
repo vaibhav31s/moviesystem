@@ -16,6 +16,15 @@
 
 
 <body>
+  <div class="container max-w-4xl mx-auto pt-10 md:pt-11 text-center break-normal">
+    <!--Title-->
+        <p class="text-white font-extrabold text-3xl md:text-5xl">
+            <a href="/">👻 Movie Recommender</a>
+        </p>
+        <p class="text-xl md:text-2xl text-white-500">Welcome To all My Visitor</p>
+        <p class="text-xl md:text-2xl pt-11 text-neutral-200">Select Genres which you like the most and Get the Recommendations
+        </p>
+</div>
       <div class="p-2">
         <form onsubmit="return handleData()" method="post" action="genre">
             {% csrf_token %}

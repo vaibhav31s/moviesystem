@@ -8,47 +8,217 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Movie System</title>
+    <link rel="stylesheet" href="{% static 'abc.css' %}">
+    <link rel="stylesheet" href="{% static 'movie.css' %}">
+
     <link rel="stylesheet" href="{% static 'style.css' %}">
     
 </head> 
 <body>
-    <div class="wrapper">
-        <div class="search-input">
-            <form action="recommendations" role="form" method="POST">
-                {% csrf_token %}
-          <a href="" target="_blank" hidden></a>
+
+    <div class="w-full m-0 p-0 bg-cover bg-bottom" style=" height: 60vh; max-height:300px;">
+        <div class="container max-w-4xl mx-auto pt-16 md:pt-11 text-center break-normal">
+            <!--Title-->
+                <p class="text-white font-extrabold text-3xl md:text-5xl">
+                    👻 Movie Recommender
+                </p>
+                <p class="text-xl md:text-2xl text-white-500">Welcome To all My Visitor</p>
+                <p class="text-xl md:text-2xl pt-11 text-neutral-200">Please Enter one Movie Which you liked in the past.
+So that we can give you recommendations.
+                </p>
+        </div>
+        <div class="wrapper">
+            <div class="search-input">
+                <form action="recommendations" role="form" method="POST">
+                    {% csrf_token %}
+              <a href="" target="_blank" hidden></a>
+              
+              <input type="text" list ="input" name="name" placeholder="Type to search Movie in our   ">
           
-          <input type="text" list ="input" name="name" placeholder="Type to search..">
+               <datalist id="input"> {% for movie in movies %}
+                   <option value ="{{movie}}">{{movie}}</option>
+                   {% endfor %}
+              
+               </datalist>
+              
+            
+              <button type="submit"  name="movie_name" class="icon"><i class="fas fa-search"  ></i></button>
+            </form>
+            </div>
+          </div>
+
+    </div>
+   
+    <div>
+      <div class="p-2">
+        <div class="pt-10 justify-center"><h1 class="genre-title" center>Genre Based Recommendations :</h1></div>
+        <form onsubmit="return handleData()" method="post" action="genre">
+            {% csrf_token %}
+        
+        <div class="container">
+          <ul class="ks-cboxtags">
+            <li>
+              <input type="checkbox" id="28" value="28" name="tag[]">
+                  <label for="28"> Action</label>
+            </li>
+            <li>
+              <input type="checkbox" id="12" value="12" name="tag[]">
+                  <label for="12"> Animation</label>
+            </li>
+            <li>
+              <input type="checkbox" id="16" value="16"  name="tag[]">
+                  <label for="16"> Animation</label>
+            </li>
+            <li>
+              <input type="checkbox" id="35" value="35" name="tag[]">
+                  <label for="35"> Comedy</label>
+            </li>
+            <li>
+              <input type="checkbox" id="1" value="1" name="tag[]">
+                  <label for="1"> Drama</label>
+            </li>
+            <li>
+                <input type="checkbox" id="10751"  value="10751" name="tag[]">
+                <label for="10751"> Family</label>
+            </li>
+            <li>
+	  
+              <input type="checkbox" id="14"  value="14" name="Fantasy">
+              <label for="14"> Fantasy</label>
+            </li>
+            <li>
+	  
+              <input type="checkbox" id="14"  value="14" name="Fantasy">
+              <label for="Fantasy"> Fantasy</label>
+    </li>
+    <li>
+      <input type="checkbox" value="36" id="36" name="tag[]">
+          <label for="36"> History</label>
+    </li>
+    <li>
+      <input type="checkbox" value="27" id="27" name="tag[]">
+          <label for="27"> Horror</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10402" id="10402" name="tag[]">
+          <label for="10402"> Music</label>
+    </li>
+    <li>
+      <input type="checkbox" value="9648" id="9648" name="tag[]">
+          <label for="9648"> Mystery</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10749" id="10749" name="tag[]">
+          <label for="10749"> Romance</label>
+    </li>
+    <li>
+      <input type="checkbox" value="878" id="878" name="tag[]">
+          <label for="878"> Science Fiction</label>
+    </li>
+    <li>
+      <input type="checkbox" value="53" id="53" name="tag[]">
+          <label for="53"> Thriller</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10770" id="10770" name="tag[]">
+          <label for="10770"> TV Movie</label>
+    </li>
+    <li>
+      <input type="checkbox" value="10752" id="10752" name="tag[]">
+          <label for="10752"> War</label>
+    </li>
+    <li>
+      <input type="checkbox" value="37" id="37" name="tag[]">
+          <label for="37"> Western</label>
+    </li>
+            
+      </ul>
+      <div>
+        <input type="submit" id="button-62" name="genres" value="Submit"/>
+        </div>
+        </div>
+        
+        </form>
+
+      </div>
+    
+ 
+    </div>
+
+    <h1 class="text-white   md:text-3xl">Top Movies Currently all over the Internet  </h1>
+    
+    <section class="overflow-hidden text-gray-700 "> 
+      <div class="flex flex-wrap ">
+        
+        {% for name, poster , rating ,overview, id1, genre  in top %} 
+          
+        <div class="movie basis-1/5">
+            <div class="genre-info">
+              <span class="label">Genre : </span>
+              {% for i in genre %}
+              <span class="pills">{{i}}</span>
+              {% endfor %}
+            </div>
+            <img src="{{poster}}" alt="{{name}}">
       
-           <datalist id="input"> {% for movie in movies %}
-            <option value="{{movie}}" style="background-image:url(images/volvo.png);">
-               <option value ="{{movie}}">{{movie}}</option>
-               {% endfor %}
+            <div class="movie-info">
+                <h3>{{name}}</h3>
+                <span class="orange">{{rating}}</span>
+            </div>
+              
+            <div class="overview">
           
-           </datalist>
+                <h3>Overview</h3>
+                <p>{{overview}}
+                </p>
+                <br> 
+                <button class="know-more" id="{{id1}}">Know More</button>
+          
+              </div>
+        </div>
+      {% endfor %}
+      
+        
+         
           
         
-          <button type="submit"  name="movie_name" class="icon"><i class="fas fa-search"  ></i></button>
-        </form>
-        </div>
+        
       </div>
+          
+    </section>
+    
        <!-- <script src="{% static 'suggestions.js' %}"></script>  -->
-     
-    <script src="{% static 'app.js' %}" defer></script>
+  
 
     
 </body>
 </html>
-<!-- <div class="container">
-    <h1>&#x2728;Harry Potter Characters &#x2728;</h1>
-    <div id="searchWrapper">
-        <input
-            type="text"
-            name="searchBar"
-            id="searchBar"
-            placeholder="search for a character"
-        />
-    </div>
-    <ul id="charactersList"></ul>
-</div>
-<script src="{% static 'app.js' %}"></script>   -->
+
+
+
+<!-- 
+<div class="grid grid-cols-5 gap-9">
+  {% for item1, item2,item3,item4,item5,s in top %} 
+
+  
+      <div class="image ">
+          <img src="{{item2}}" alt="">
+          <div class="details">
+            <h2><span>{{item1}}</span></h2>
+            <p>{{item4}}</p>
+            <div class="more">
+              <a href="#" class="read-more">Read <span></span></a>
+              <div class="icon-links">
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-eye"></i></a>
+                <a href="#"><i class="fas fa-paperclip"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+ 
+  
+  {% endfor %}
+
+</div> -->

@@ -6,8 +6,9 @@
   font-family: 'Poppins', sans-serif;
 }
 body{
-  background: #007add;
-  padding: 0 20px;
+  background: darkslateblue;
+  padding: 0 50px;
+  margin: 20px;
 }
 ::selection{
   color: #fff;
@@ -74,4 +75,8 @@ body{
   font-size: 20px;
   color: #e49c00;
   cursor: pointer;
+}
+.genre-title {
+  color: white;
+  margin-left: 30px;
 }

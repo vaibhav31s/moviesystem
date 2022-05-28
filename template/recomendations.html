@@ -7,101 +7,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'movie.css' %}">
+
     <title>Movie System</title>
     
 </head> 
-<body>
-    
-    <div class="min-w-screen  pt-5 pb-5 justify-between ">
+<body style="background: darkslateblue;">
+
+  <div class="container max-w-4xl mx-auto pt-10 md:pt-11 text-center break-normal">
+    <!--Title-->
+        <p class="text-white font-extrabold text-3xl md:text-5xl">
+            <a href="/">👻 Movie Recommender</a>
+        </p>
+      
+</div>
   
-        <div class=" sm:max-w-xl sm:mx-auto">
-          <div class="bg-white shadow-lg border-gray-100 max-h-80	 border sm:rounded-3xl p-2 flex space-x-8">
-            {% for item1, item2, genre in mylist2 %} 
-            <div class="h-48 overflow-visible w-1/2">
+      
+      <div class="md:flex banner justify-center rounded-xl  md:p-2 ">     
+        {% for item1, item2, genre ,backdrop,overview,rating in mylist2 %}  
+          <div class=" border-gray-100 	 	banner border sm: p-3 flex space-x-8">
+           
+            <div class="overflow-visible">
                
-                <img class="rounded-3xl shadow-lg" src="{{item2}}" alt="">
+                <img class="rounded shadow-lg w-24 h-24 md:w-48 md:h-auto " src="{{item2}}" alt="">
                 
              </div>
             <div class="flex flex-col w-1/2 space-y-4">
-              <div class="genre-info">
-                <h2 class="label">Genre :
+              <div class="flex">
+                <h2 style="margin-top: 10px;" class="label text-white">Genre :  </h2>
                 {% for i in genre %}
-                <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
+                <button class="bg-blue-300 hover:bg-blue-200 text-black font py-1 px-2 m-1 rounded-xl">
                  {{i}}
                 </button>
-              </h2>
+            
                 {% endfor %}
                
               </div>
               <div class="flex justify-between items-start">
-                <h2 class="text-3xl font-bold">{{item1}}</h2>
-                <div class="bg-yellow-400 font-bold rounded-xl p-2">rating</div>
+                <h2 class="text-4xl text-white font-bold">{{item1}}</h2>
+                <div class="bg-yellow-200  font-bold rounded-xl p-2">{{rating}}</div>
               </div>
               <div> 
-                <div class="text-sm text-gray-400">Series</div>
-                <div class="text-lg text-gray-800">2019</div>
+         
               </div>
-                <p class=" text-gray-400 max-h-40 overflow-y-hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              <div class="flex text-2xl font-bold text-a">Watch Movie</div>
+                <p class=" text-white  max-h-40 overflow-y-hidden">{{overview}}</p>
+              <div class="flex text-2xl font-bold  text-a">Know More</div>
             </div>
-            {% endfor %}
+            
           </div>
+          {% endfor %}
         </div>
         
-      </div>
+        
+      
 
 
       <div class="container mx-auto my-6 lg:px-16 px-4">
         <ul class="flex items-center leading-normal text-black-500 font-alt">
-          <li class=" bold font-awesome text-xl mb-2 p-1">Recommendations </li>
+          <li class=" font-medium  text-white	 text-xl ">Recommendations : </li>
          
         </ul>
       </div>
     
-    <div class="flex   flex-wrap  mb-4 gap-20 justify-center">
-        {% for item1, item2, item3 in mylist %} 
-        <div class=" lg:w-1/5 bg-white-100 rounded shadow-lg shadow-2xl  rounded-lg w-140 h-90 cursor-pointer">
-            <!--Card 1-->
-            <form hidden="true" action="recommendations" method="POST">
-                {% csrf_token %}
-                <input type="text" hidden="true" name="name" value="{{item1}}">
-                <input type="submit" id="recommendations-btn{{item1}}" name="movie_name">
-            </form>
+    
+    <section class="overflow-hidden text-gray-700 "> 
+      <div class="flex flex-wrap  justify-center">
+        
+        {% for title , poster, genre, backdrop,rating,overview  in mylist %} 
+          
+        <div class="movie basis-1/5">
             <div class="genre-info">
-              <h2 class="label">Genre : </h2>
-              {% for i in item3 %}
-              <button class="bg-blue-300 hover:bg-blue-200 text-white font-bold py-2 px-4 rounded-full">
-               {{i}}
-              </button>
+              <span class="label">Genre : </span>
+              {% for i in genre %}
+              <span class="pills">{{i}}</span>
               {% endfor %}
-             
             </div>
-                <div class="" >
-                  <div  class="md:flex md:justify-center font-bold px-2 py-2 text-center">
-                    <a href="javascript:;" onclick="document.getElementById('recommendations-btn{{item1}}').click();" class="action-item">Get Recommendations</a>
-                    <a title="Get Recommendations" href="" type="submit" name="recommendations"
-                    class="action-item"></a>
-              
-                  </div>
-    
-               <a  href="{{item2}}" target="_blank"> <img class="w-24 h-24  mx-auto  h-auto " style="image-rendering: pixelated;
-                " src="{{item2}}" alt="Mountain"></a>
-                
-                <div class="px-3  justify-center   flex flex-col items-center justify-center pt-8 py-3">
-    
-                    <div class="name  bold font-awesome text-xl mb-2 p-1 " style="-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;"> {{item1}}</div>
-                    <!-- password modal-->
-                    
-                </div>
-                
+            <form hidden="true" action="recommendations" method="POST">
+              {% csrf_token %}
+              <input type="text" hidden="true" name="name" value="{{title}}">
+              <input type="submit" id="recommendations-btn{{title}}" name="movie_name">
+          </form>
+            <div  class="md:flex text-neutral-50 md:justify-center font-bold px-2 py-2 text-center">
+              <a href="javascript:;" onclick="document.getElementById('recommendations-btn{{title}}').click();" class="action-item">Get Recommendations</a>
+              <a title="Get Recommendations" href="" type="submit" name="recommendations"
+              class="action-item"></a>
+        
             </div>
+            <img src="{{poster}}" alt="{{name}}">
       
+            <div class="movie-info">
+                <h3>{{title}}</h3>
+                <span class="orange">{{rating}}</span>
+            </div>
+              
+            <div class="overview">
+          
+                <h3>Overview</h3>
+                <p>{{overview}}
+                </p>
+                <br> 
+                <button class="know-more" id="{{id1}}">Know More</button>
+          
+              </div>
         </div>
-        {% endfor %}
-    </div>
-
+      {% endfor %}
+      
+        
+         
+          
+        
+        
+      </div>
+          
+    </section>
  
 
 

@@ -2,6 +2,7 @@ from copyreg import pickle
 import imp
 from multiprocessing import context
 import pkgutil
+from urllib import response
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests
@@ -37,7 +38,6 @@ def product_list(request):
 def product_details(request,id):
  
     return Response(id)
-    
 
 
 def fetch_poster(movie_id):
@@ -73,21 +73,21 @@ def movieInfo(movie):
 
 
 genres = {
-      28: "Action",
-      12: "Animation",
-      16: "Animation",
-      35: "Comedy",
-      28: "Action",
-      80: "Crime", 
-      99: "Documentary",
-      18: "Drama", 
-      10751: "Family",
+      '28': "Action",
+      '12': "Animation",
+      '16': "Animation",
+      '35': "Comedy",
+      '28': "Action",
+      '80': "Crime", 
+      '99': "Documentary",
+      '18': "Drama", 
+      '10751': "Family",
       14: "Fantasy",
       36: "History",
       27: "Horror",
       10402: "Music",
       9648: "Mystery",
-      10749: "Romance",
+      '10749': "Romance",
       878: "Science Fiction", 
       10770: "TV Movie",
       53: "Thriller", 
@@ -148,6 +148,7 @@ def topMovies():
         
     return title,list2,list3,list4,list5,list6
 
+
 def recommendations(request):
 
     if "movie_name" in request.POST:
@@ -178,3 +179,20 @@ def index(request):
                 "movies":movies['title'].values,"top":mylist,
             }  
     return render(request, 'index1.html', context)
+
+
+def genre(request):
+    if "genres" in request.POST:
+        data = request.POST.getlist('tag[]')
+        url ="https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d5d568d260d85ea19b7153923c213fe9&with_genres="
+        
+        for i in data :
+            url+=i+','
+        resposes=requests.get(url).json()
+        print(url)
+        return render(request,'checkbox.html',{"top":resposes,'genress':genres})
+
+    context = {
+                "movies":movies['title'].values,'genress':genres,
+            }  
+    return render(request,'checkbox.html',context)

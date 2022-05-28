@@ -2,7 +2,6 @@ from copyreg import pickle
 import imp
 from multiprocessing import context
 import pkgutil
-from urllib import response
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests
@@ -38,6 +37,7 @@ def product_list(request):
 def product_details(request,id):
  
     return Response(id)
+    
 
 
 def fetch_poster(movie_id):
@@ -46,11 +46,7 @@ def fetch_poster(movie_id):
     data = data.json()
     poster_path = data['poster_path']
     full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-    fetch_backdrop= "https://image.tmdb.org/t/p/w500/"+ data['backdrop_path']
-    rating= str(data['vote_average'])
-    overview=  data['overview']
-
-    return full_path,fetch_backdrop,rating,overview
+    return full_path
 
 
 def fetch_rating(movie_id):
@@ -64,24 +60,15 @@ def movieInfo(movie):
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
     recommended_movie_names = []
     recommended_movie_posters = []
-    recommended_movie_backdrop = []
     generes=[]
-    ratings=[]
-    overviews=[]
-
     for i in distances[0:1]:
         # fetch the mov ie poster
         movie_id = movies.iloc[i[0]].movie_id
-        poster,backdrop, rating, overview=fetch_poster(movie_id)
-        ratings.append(rating)
-        overviews.append(overview)
-        recommended_movie_posters.append(poster)
-        recommended_movie_backdrop.append(backdrop)
-        
+        recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
         generes.append(movies.iloc[i[0]].genres)
     
-    return recommended_movie_names,recommended_movie_posters,generes,recommended_movie_backdrop,overviews,ratings
+    return recommended_movie_names,recommended_movie_posters,generes
 
 
 
@@ -123,31 +110,22 @@ def recommend(movie):
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
     recommended_movie_names = []
     recommended_movie_posters = []
-    recommended_movie_backdrop =[]
-
     generes=[]
-    ratings=[]
-    overviews=[]
-    
+    rating=[]
     counter=0
-    for i in distances[1:9]:
+    for i in distances[1:10]:
         # fetch the movie poster
         movie_id = movies.iloc[i[0]].movie_id
-        poster,backdrop,overview, rating =fetch_poster(movie_id)
-        recommended_movie_posters.append(poster)
-        recommended_movie_backdrop.append(backdrop)
-        overviews.append(overview)
-        ratings.append(rating)
-
+        recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
         generes.append(movies.iloc[i[0]].genres)
         # rating = movies.iloc[i[0]].vote_average
         counter+=1
-   
-    return recommended_movie_names,recommended_movie_posters,generes,recommended_movie_backdrop,overviews,ratings
+    print(rating)
+    return recommended_movie_names,recommended_movie_posters,generes
 
-def topMovies(url):
-   
+def topMovies():
+    url ="https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1"
     data = requests.get(url)
     data = data.json()
     
@@ -170,24 +148,23 @@ def topMovies(url):
         
     return title,list2,list3,list4,list5,list6
 
-
 def recommendations(request):
 
     if "movie_name" in request.POST:
         name = request.POST.get('name')
         # vaibhav = recommend(name)
         # print(vaibhav)
-        recommended_movie_names,recommended_movie_posters,generes, backdrop, overview,rating  = recommend(name)
-        recommended_movie_name,recommended_movie_poster, genres1,backdrops,overviews,ratings = movieInfo(name)
+        recommended_movie_names,recommended_movie_posters,generes = recommend(name)
+        recommended_movie_name,recommended_movie_poster, genres1= movieInfo(name)
         
-        mylist = zip(recommended_movie_names, recommended_movie_posters,generes,backdrop,overview,rating)
-        mylist1 = zip(recommended_movie_name, recommended_movie_poster,genres1,backdrops,overviews,ratings)
+        mylist = zip(recommended_movie_names, recommended_movie_posters,generes)
+        mylist1 = zip(recommended_movie_name, recommended_movie_poster,genres1)
      
-    context={ 'mylist': mylist,'mylist2':mylist1,'top':mylist}
+    context={ 'mylist': mylist,'mylist2':mylist1}
     return render(request,'recomendations.html',context)
 
 def movieflix(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies("https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1")
+    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies()
     mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
     context = {
                 "top":mylist,
@@ -195,28 +172,9 @@ def movieflix(request):
     return render(request, 'cardsTesting.html', context)
 
 def index(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies("https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1")
-    mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
+    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies()
+    topMoviess = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
     context = {
-                "movies":movies['title'].values,"top":mylist,
+                "movies":movies['title'].values,"top":topMoviess,
             }  
     return render(request, 'index1.html', context)
-
-
-def genre(request):
-    if "genres" in request.POST:
-        data = request.POST.getlist('tag[]')
-        url ="https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d5d568d260d85ea19b7153923c213fe9&with_genres="
-        
-        for i in data :
-            url+=i+','
-        resposes=requests.get(url).json()
-        recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(url)
-        genress = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
-        print(url)
-        return render(request,'checkbox.html',{"top":genress,'genress':genres})
-
-    context = {
-                "movies":movies['title'].values
-            }  
-    return render(request,'checkbox.html',context)

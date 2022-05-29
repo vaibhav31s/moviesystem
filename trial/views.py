@@ -46,7 +46,7 @@ def fetch_poster(movie_id):
     data = data.json()
     poster_path = data['poster_path']
     full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-    fetch_backdrop= "https://image.tmdb.org/t/p/w500/"+ data['backdrop_path']
+    fetch_backdrop= data['imdb_id']
     rating= str(data['vote_average'])
     overview=  data['overview']
 

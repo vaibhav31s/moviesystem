@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Movie System</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    
+</head> 
+<body>
+    <div class="wrapper">
+        <div class="search-input">
+            <form action="recommendations" role="form" method="POST">
+                {% csrf_token %}
+          <a href="" target="_blank" hidden></a>
+          
+          <input type="text" list ="input" name="name" placeholder="Type to search..">
+      
+           <datalist id="input"> {% for movie in movies %}
+            <option value="{{movie}}" style="background-image:url(images/volvo.png);">
+               <option value ="{{movie}}">{{movie}}</option>
+               {% endfor %}
+          
+           </datalist>
+          
+        
+          <button type="submit"  name="movie_name" class="icon"><i class="fas fa-search"  ></i></button>
+        </form>
+        </div>
+      </div>
+       <!-- <script src="{% static 'suggestions.js' %}"></script>  -->
+     
+    <script src="{% static 'app.js' %}" defer></script>
+
+    
+</body>
+</html>
+<!-- <div class="container">
+    <h1>&#x2728;Harry Potter Characters &#x2728;</h1>
+    <div id="searchWrapper">
+        <input
+            type="text"
+            name="searchBar"
+            id="searchBar"
+            placeholder="search for a character"
+        />
+    </div>
+    <ul id="charactersList"></ul>
+</div>
+<script src="{% static 'app.js' %}"></script>   -->

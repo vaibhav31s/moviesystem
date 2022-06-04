@@ -30,7 +30,7 @@ Also can be able to get more information of movies from IMDB on clicking of Know
 **Algorithm Walkthrough Explained in this Excel**  https://docs.google.com/spreadsheets/d/11AUtJWwsBh0lnXZyvuM5OW5qvQ5yovA1sd0_srtkAms/edit?usp=sharing
 
 ## Hosted here
-- Azure Cloud : https://movieflex.azurewebsites.net/ 
+- Azure Cloud : https://movieflex.azurewebsites.net/ , https://movieflexx.azurewebsites.net/
 - Heroku : https://movieflexx.herokuapp.com/
 
 ## Tech Stack 
@@ -52,7 +52,7 @@ $ git clone https://github.com/vaibhav31s/moviesystem
 $ cd moviesystem
 ```
 Download Files From Mega and put it into MovieSystem folder
-https://mega.nz/folder/wewSyK6Y
+https://mega.nz/folder/wewSyK6Y#Bav2h7unGv670zAcNpIKwQ
 
 Then install the dependencies:
 ```sh

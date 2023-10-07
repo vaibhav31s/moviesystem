@@ -1,7 +1,5 @@
-# MovieFlex
-
 # Microsoft Engage 2022 Algorithm Demonstration By Vaibhav Gawad 
-
+MovieFlex
 
 ##  ABOUT PROJECT
 Using consine Similarity Between all Movies I am going to recommend user Movie based on the Movie he Watched in the past or he liked the most.

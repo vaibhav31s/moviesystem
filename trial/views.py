@@ -1,5 +1,4 @@
 from copyreg import pickle
-import imp
 from multiprocessing import context
 import pkgutil
 from urllib import response

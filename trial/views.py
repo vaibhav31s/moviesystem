@@ -1,223 +1,69 @@
-from copyreg import pickle
-from multiprocessing import context
-import pkgutil
-from urllib import response
-from django.shortcuts import render
-from django.http import HttpResponse
-import requests
+from django.http import Http404, JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 
-import template
-import numpy as np
-import pandas as pd
-import pickle
-import os
-import csv
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import os
-TMDB_API_KEY = os.environ.get('TMDB_API_KEY', '')
-movies_list=pickle.load(open('movie_dict.pkl','rb'))
-similarity = pickle.load(open('similarity.pkl','rb'))
-movies = pd.DataFrame(movies_list)
-type(movies_list)
-# print(movies)
-# with open('movies.pkl','rb') as file:
-#     employee = pickle.load(file)
-
-# print(movies_list)  
-# movies= pd.read_csv('../../static/tmdb_5000_movies.csv')
-# credits = pd.read_csv('../../static/tmdb_5000_credits.csv')
-
-# Create your views here.
-@api_view()
-def product_list(request):
-    context = {
-                "passwords":movies['title'].values,
-            }  
-    return Response(context)
-@api_view()
-def product_details(request,id):
- 
-    return Response(id)
+from . import catalog, tmdb
 
 
-def fetch_poster(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
-    data = requests.get(url)
-    data = data.json()
-    poster_path = data['poster_path']
-    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-    fetch_backdrop= data['imdb_id']
-    rating= str(data['vote_average'])
-    overview=  data['overview']
+def _base_context(**extra):
+    return {"tmdb_enabled": tmdb.enabled(), "all_genres": catalog.genres(), **extra}
 
-    return full_path,fetch_backdrop,rating,overview
-
-
-def fetch_rating(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
-    data = requests.get(url)
-    data = data.json()
-    return "9.4"
-  
-def movieInfo(movie):
-    index = movies[movies['title'] == movie].index[0]
-    distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
-    recommended_movie_names = []
-    recommended_movie_posters = []
-    recommended_movie_backdrop = []
-    generes=[]
-    ratings=[]
-    overviews=[]
-
-    for i in distances[0:1]:
-        # fetch the mov ie poster
-        movie_id = movies.iloc[i[0]].movie_id
-        poster,backdrop, rating, overview=fetch_poster(movie_id)
-        ratings.append(rating)
-        overviews.append(overview)
-        recommended_movie_posters.append(poster)
-        recommended_movie_backdrop.append(backdrop)
-        
-        recommended_movie_names.append(movies.iloc[i[0]].title)
-        generes.append(movies.iloc[i[0]].genres)
-    
-    return recommended_movie_names,recommended_movie_posters,generes,recommended_movie_backdrop,overviews,ratings
-
-
-
-genres = {
-      28: "Action",
-      12: "Animation",
-      16: "Animation",
-      35: "Comedy",
-      28: "Action",
-      80: "Crime", 
-      99: "Documentary",
-      18: "Drama", 
-      10751: "Family",
-      14: "Fantasy",
-      36: "History",
-      27: "Horror",
-      10402: "Music",
-      9648: "Mystery",
-      10749: "Romance",
-      878: "Science Fiction", 
-      10770: "TV Movie",
-      53: "Thriller", 
-      10752: "War",
-      37: "Western",
-
-    }
-
-def fetch_genres(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
-    data = requests.get(url)
-    data = data.json()
-  
-    
-    print(data['genres'])
-    return geners
-  
-def recommend(movie):
-    index = movies[movies['title'] == movie].index[0]
-    distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
-    recommended_movie_names = []
-    recommended_movie_posters = []
-    recommended_movie_backdrop =[]
-
-    generes=[]
-    ratings=[]
-    overviews=[]
-    
-    counter=0
-    for i in distances[1:9]:
-        # fetch the movie poster
-        movie_id = movies.iloc[i[0]].movie_id
-        poster,backdrop,overview, rating =fetch_poster(movie_id)
-        recommended_movie_posters.append(poster)
-        recommended_movie_backdrop.append(backdrop)
-        overviews.append(overview)
-        ratings.append(rating)
-
-        recommended_movie_names.append(movies.iloc[i[0]].title)
-        generes.append(movies.iloc[i[0]].genres)
-        # rating = movies.iloc[i[0]].vote_average
-        counter+=1
-   
-    return recommended_movie_names,recommended_movie_posters,generes,recommended_movie_backdrop,overviews,ratings
-
-def topMovies(url):
-   
-    data = requests.get(url)
-    data = data.json()
-    
-    title = []
-    list2 = []
-    list3 = []
-    list4 = []
-    list5 = []
-    list6 = [[],[],[],[],[],[],[],[],[],[]]
-    for i in range(0,8):
-        title.append(data['results'][i]['title'])
-        list3.append(data['results'][i]['vote_average'])
-        list4.append(data['results'][i]['overview'])
-        list5.append(data['results'][i]['id'])
-        for j in data['results'][i]['genre_ids']:
-            list6[i].append(genres[j])
-        poster_path = data['results'][i]['poster_path']
-        full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-        list2.append(full_path)
-        
-    return title,list2,list3,list4,list5,list6
-
-
-def recommendations(request):
-
-    if "movie_name" in request.POST:
-        name = request.POST.get('name')
-        # vaibhav = recommend(name)
-        # print(vaibhav)
-        recommended_movie_names,recommended_movie_posters,generes, backdrop, overview,rating  = recommend(name)
-        recommended_movie_name,recommended_movie_poster, genres1,backdrops,overviews,ratings = movieInfo(name)
-        
-        mylist = zip(recommended_movie_names, recommended_movie_posters,generes,backdrop,overview,rating)
-        mylist1 = zip(recommended_movie_name, recommended_movie_poster,genres1,backdrops,overviews,ratings)
-     
-    context={ 'mylist': mylist,'mylist2':mylist1,'top':mylist}
-    return render(request,'recomendations.html',context)
-
-def movieflix(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=en-US&page=1")
-    mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
-    context = {
-                "top":mylist,
-            }  
-    return render(request, 'cardsTesting.html', context)
 
 def index(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=en-US&page=1")
-    mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
-    context = {
-                "movies":movies['title'].values,"top":mylist,
-            }  
-    return render(request, 'index.html', context)
+    return render(
+        request,
+        "index.html",
+        _base_context(
+            trending=tmdb.enrich(catalog.trending(12)),
+            top=tmdb.enrich(catalog.top_rated(12)),
+        ),
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def recommendations(request):
+    query = request.POST.get("name") or request.GET.get("movie") or request.GET.get("name") or ""
+    if not query.strip():
+        return redirect("Homepage")
+
+    movie = catalog.find(query)
+    if movie is None:
+        return render(
+            request,
+            "recommendations.html",
+            _base_context(query=query, suggestions=catalog.search(query.split()[0] if query.split() else query)),
+            status=404,
+        )
+
+    picked, *recs = tmdb.enrich([movie] + catalog.recommend(movie, 8))
+    return render(request, "recommendations.html", _base_context(query=query, movie=picked, recs=recs))
 
 
 def genre(request):
-    if "genres" in request.POST:
-        data = request.POST.getlist('tag[]')
-        url =f"https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key={TMDB_API_KEY}&with_genres="
-        
-        for i in data :
-            url+=i+','
-        resposes=requests.get(url).json()
-        recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(url)
-        genress = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
-        print(url)
-        return render(request,'checkbox.html',{"top":genress,'genress':genres})
+    valid = set(catalog.genres())
+    selected = [g for g in (request.GET.getlist("g") or request.POST.getlist("g")) if g in valid]
+    results = tmdb.enrich(catalog.by_genres(selected)) if selected else []
+    return render(request, "genre.html", _base_context(selected=selected, results=results))
 
-    context = {
-                "movies":movies['title'].values
-            }  
-    return render(request,'checkbox.html',context)
+
+def movieflix(request):
+    return redirect("Homepage")
+
+
+def titles(request):
+    q = request.GET.get("q")
+    if q is not None:
+        return JsonResponse({"results": [{"title": m["title"], "year": m["year"]} for m in catalog.search(q)]})
+    return JsonResponse({"titles": catalog.titles()})
+
+
+def product_details(request, id):
+    try:
+        movie = catalog.get(int(id))
+    except ValueError:
+        movie = None
+    if movie is None:
+        raise Http404("Movie not found")
+    data = {k: v for k, v in movie.items() if k != "score"}
+    data["similar"] = [{"id": m["id"], "title": m["title"]} for m in catalog.recommend(movie, 12)]
+    return JsonResponse(data)

@@ -1,12 +1,11 @@
-static/tmdb_5000_credits.csv
-static/tmdb_5000_movies.csv
-movie_dict.pkl
-movies.pkl
-movies.pkl
-movie_dict.pkl
-similarity.pkl
-movie_dict.pkl
-movie_dict.pkl
-movie_dict.pkl
-
 .env
+.venv/
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+staticfiles/
+.vercel/
+# Raw Kaggle CSVs and old pickles: rebuild data/movies.json with scripts/build_recommendations.py
+*.csv
+*.pkl

@@ -1,0 +1,13 @@
+[project]
+name = "movieflex"
+version = "2.0.0"
+description = "Content-based movie recommendations (Django)"
+requires-python = ">=3.12"
+dependencies = [
+    "django==6.1.3",
+    "whitenoise==6.12.0",
+    "requests==2.34.2",
+]
+
+[tool.vercel]
+entrypoint = "moviesystem.wsgi:application"

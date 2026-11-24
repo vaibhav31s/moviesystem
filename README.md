@@ -1,6 +1,6 @@
 # MovieFlex
 
-**Live:** https://moviesystem.vercel.app
+**Live:** https://movies.vaibhavgawad.com
 
 Movie recommendations by Vaibhav Gawad, first built for Microsoft Engage 2022.
 

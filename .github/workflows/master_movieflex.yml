@@ -4,10 +4,10 @@
 
 name: Build and deploy Python app to Azure Web App - MovieFlex
 
+# Manual-only: the MovieFlex Azure Web App no longer resolves, so every push
+# failed at the deploy step. Re-add the push trigger once the app (and the
+# DJANGO_SECRET_KEY / TMDB_API_KEY app settings) exist again.
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:

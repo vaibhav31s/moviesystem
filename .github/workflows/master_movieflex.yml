@@ -33,6 +33,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Django system check
+        env:
+          DJANGO_SECRET_KEY: ci-check-only-not-a-real-secret
         run: |
           source venv/bin/activate
           python manage.py check

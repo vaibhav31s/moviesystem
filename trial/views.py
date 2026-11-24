@@ -14,6 +14,8 @@ import os
 import csv
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import os
+TMDB_API_KEY = os.environ.get('TMDB_API_KEY', '')
 movies_list=pickle.load(open('movie_dict.pkl','rb'))
 similarity = pickle.load(open('similarity.pkl','rb'))
 movies = pd.DataFrame(movies_list)
@@ -40,7 +42,7 @@ def product_details(request,id):
 
 
 def fetch_poster(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US".format(movie_id)
+    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
     data = requests.get(url)
     data = data.json()
     poster_path = data['poster_path']
@@ -53,7 +55,7 @@ def fetch_poster(movie_id):
 
 
 def fetch_rating(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US".format(movie_id)
+    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
     data = requests.get(url)
     data = data.json()
     return "9.4"
@@ -109,7 +111,7 @@ genres = {
     }
 
 def fetch_genres(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US".format(movie_id)
+    url = "https://api.themoviedb.org/3/movie/{}?api_key={}&language=en-US".format(movie_id, TMDB_API_KEY)
     data = requests.get(url)
     data = data.json()
   
@@ -186,7 +188,7 @@ def recommendations(request):
     return render(request,'recomendations.html',context)
 
 def movieflix(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies("https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1")
+    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=en-US&page=1")
     mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
     context = {
                 "top":mylist,
@@ -194,7 +196,7 @@ def movieflix(request):
     return render(request, 'cardsTesting.html', context)
 
 def index(request):
-    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies("https://api.themoviedb.org/3/movie/top_rated?api_key=d5d568d260d85ea19b7153923c213fe9&language=en-US&page=1")
+    recommended_movie_names,recommended_movie_posters, ratings, overview,id,genre =  topMovies(f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=en-US&page=1")
     mylist = zip(recommended_movie_names,recommended_movie_posters,ratings,overview,id,genre)
     context = {
                 "movies":movies['title'].values,"top":mylist,
@@ -205,7 +207,7 @@ def index(request):
 def genre(request):
     if "genres" in request.POST:
         data = request.POST.getlist('tag[]')
-        url ="https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d5d568d260d85ea19b7153923c213fe9&with_genres="
+        url =f"https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key={TMDB_API_KEY}&with_genres="
         
         for i in data :
             url+=i+','

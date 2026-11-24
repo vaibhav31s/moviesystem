@@ -40,7 +40,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "moviesystem.framing.FrameAncestorsMiddleware",
 ]
 
 ROOT_URLCONF = "moviesystem.urls"
@@ -87,3 +87,6 @@ LOGGING = {
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "root": {"handlers": ["console"], "level": "WARNING"},
 }
+
+# Sites allowed to show this app in an iframe (portfolio live previews); all others are blocked.
+FRAME_ANCESTORS = ["'self'", "https://vaibhavgawad.com", "https://www.vaibhavgawad.com"]

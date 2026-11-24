@@ -1,0 +1,20 @@
+<article class="card">
+  <a class="card-link" href="{% url 'recommendations' %}?movie={{ m.title|urlencode }}" aria-label="More like {{ m.title }}">
+    <div class="poster" style="--hue: {{ m.hue }}">
+      {% if m.poster %}
+        <img src="{{ m.poster }}" alt="{{ m.title }} poster" loading="lazy">
+      {% else %}
+        <div class="poster-fallback"><span>{{ m.title }}</span></div>
+      {% endif %}
+      <span class="rating" title="TMDB rating">★ {{ m.rating|floatformat:1 }}</span>
+      <div class="overlay">
+        <p class="overview">{{ m.overview|truncatewords:34 }}</p>
+        <span class="overlay-cta">More like this →</span>
+      </div>
+    </div>
+  </a>
+  <div class="card-body">
+    <h3 class="card-title" title="{{ m.title }}">{{ m.title }}</h3>
+    <p class="card-meta">{{ m.year }}{% if m.genres %} · {{ m.genres|slice:":2"|join:", " }}{% endif %}</p>
+  </div>
+</article>

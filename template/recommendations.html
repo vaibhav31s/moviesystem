@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{% if movie %}Movies like {{ movie.title }}{% else %}Not found{% endif %} · MovieFlex{% endblock %}
+{% block content %}
+{% if movie %}
+<section class="feature" style="--hue: {{ movie.hue }}{% if movie.backdrop %}; --backdrop: url('{{ movie.backdrop }}'){% endif %}">
+  <div class="wrap feature-inner">
+    <div class="poster feature-poster" style="--hue: {{ movie.hue }}">
+      {% if movie.poster %}<img src="{{ movie.poster }}" alt="{{ movie.title }} poster">{% else %}<div class="poster-fallback"><span>{{ movie.title }}</span></div>{% endif %}
+    </div>
+    <div class="feature-text">
+      <p class="eyebrow">Because you liked</p>
+      <h1>{{ movie.title }} <span class="year">{{ movie.year }}</span></h1>
+      <p class="facts">
+        <span class="pill">★ {{ movie.rating|floatformat:1 }}</span>
+        {% for g in movie.genres %}<a class="pill pill-ghost" href="{% url 'genre' %}?g={{ g|urlencode }}">{{ g }}</a>{% endfor %}
+      </p>
+      <p class="overview-lg">{{ movie.overview }}</p>
+      <p class="credits">
+        {% if movie.director %}<span><b>Director</b> {{ movie.director }}</span>{% endif %}
+        {% if movie.cast %}<span><b>Starring</b> {{ movie.cast|join:", " }}</span>{% endif %}
+      </p>
+      <a class="btn" href="{{ movie.link }}" target="_blank" rel="noopener">Know more ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap row">
+  <div class="row-head"><h2>You might also like</h2><p>Click any film to get recommendations for it</p></div>
+  <div class="grid grid-4">{% for m in recs %}{% include "_card.html" %}{% endfor %}</div>
+</section>
+{% else %}
+<section class="wrap empty">
+  <h1>We couldn't find “{{ query }}”</h1>
+  <p>The catalog covers about 4,800 well-known films. Check the spelling, or pick one of these:</p>
+  {% if suggestions %}
+  <ul class="suggest-list">
+    {% for m in suggestions %}<li><a href="{% url 'recommendations' %}?movie={{ m.title|urlencode }}">{{ m.title }} <span>{{ m.year }}</span></a></li>{% endfor %}
+  </ul>
+  {% endif %}
+  <a class="btn" href="{% url 'Homepage' %}">Back to home</a>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MovieFlex{% endblock %}</title>
+  <meta name="description" content="Pick a movie you love and get eight more like it. Content-based recommendations over 4,800 films.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="{% url 'Homepage' %}"><span class="brand-mark">▶</span><span class="brand-name">Movie<b>Flex</b></span></a>
+      <nav class="nav-links">
+        <a href="{% url 'Homepage' %}" {% if request.resolver_match.url_name == 'Homepage' %}aria-current="page"{% endif %}>Home</a>
+        <a href="{% url 'genre' %}" {% if request.resolver_match.url_name == 'genre' %}aria-current="page"{% endif %}>Genres</a>
+      </nav>
+      {% block navsearch %}
+      <form class="search search-sm" action="{% url 'recommendations' %}" method="get" role="search" autocomplete="off">
+        <input type="search" name="movie" placeholder="Search a movie…" aria-label="Search a movie" data-autocomplete required>
+        <ul class="suggest" hidden></ul>
+      </form>
+      {% endblock %}
+    </div>
+  </header>
+
+  {% if not tmdb_enabled %}
+  <div class="wrap"><div class="notice">Posters are off: set <code>TMDB_API_KEY</code> to load artwork from TMDB. Recommendations still work.</div></div>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="footer wrap">
+    <p>Recommendations use content-based filtering (cosine similarity over plot, genres, keywords, cast and director) on the TMDB 5000 dataset.</p>
+    <p>Movie data and images from <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+  </footer>
+
+  <script>window.TITLES_URL = "{% url 'titles' %}";</script>
+  <script src="{% static 'app.js' %}" defer></script>
+</body>
+</html>

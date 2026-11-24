@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{% if selected %}{{ selected|join:" + " }}{% else %}Browse by genre{% endif %} · MovieFlex{% endblock %}
+{% block content %}
+<section class="wrap page-head">
+  <h1>Browse by genre</h1>
+  <p class="lede">Pick one or more genres. Films matching all of them are ranked by rating.</p>
+  <form class="genre-form" method="get" action="{% url 'genre' %}">
+    <div class="genre-grid">
+      {% for g in all_genres %}
+      <label class="toggle">
+        <input type="checkbox" name="g" value="{{ g }}" {% if g in selected %}checked{% endif %}>
+        <span>{{ g }}</span>
+      </label>
+      {% endfor %}
+    </div>
+    <div class="genre-actions">
+      <button class="btn" type="submit">Show movies</button>
+      {% if selected %}<a class="btn btn-ghost" href="{% url 'genre' %}">Clear</a>{% endif %}
+    </div>
+  </form>
+</section>
+
+{% if selected %}
+<section class="wrap row">
+  <div class="row-head"><h2>{{ selected|join:" + " }}</h2><p>{{ results|length }} film{{ results|length|pluralize }}</p></div>
+  {% if results %}
+  <div class="grid">{% for m in results %}{% include "_card.html" %}{% endfor %}</div>
+  {% else %}
+  <p class="muted">No films match all of those genres. Try removing one.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

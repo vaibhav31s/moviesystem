@@ -1,59 +1,66 @@
-// getting all required elements
-const searchWrapper = document.querySelector(".search-input");
-const inputBox = searchWrapper.querySelector("input");
-const suggBox = searchWrapper.querySelector(".autocom-box");
-const icon = searchWrapper.querySelector(".icon");
-let linkTag = searchWrapper.querySelector("a");
-let webLink;
+// Title autocomplete for every search box marked with data-autocomplete.
+(function () {
+  let titlesPromise = null;
+  const loadTitles = () =>
+    (titlesPromise ||= fetch(window.TITLES_URL)
+      .then((r) => r.json())
+      .then((d) => d.titles)
+      .catch(() => []));
 
-// if user press any key and release
-inputBox.onkeyup = (e)=>{
-    let userData = e.target.value; //user enetered data
-    let emptyArray = [];
-    if(userData){
-        icon.onclick = ()=>{
-            webLink = `https://www.google.com/search?q=${userData}`;
-            linkTag.setAttribute("href", webLink);
-            linkTag.click();
-        }
-        emptyArray = suggestions.filter((data)=>{
-            //filtering array value and user characters to lowercase and return only those words which are start with user enetered chars
-            return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
-        });
-        emptyArray = emptyArray.map((data)=>{
-            // passing return data inside li tag
-            return data = `<li>${data}</li>`;
-        });
-        searchWrapper.classList.add("active"); //show autocomplete box
-        showSuggestions(emptyArray);
-        let allList = suggBox.querySelectorAll("li");
-        for (let i = 0; i < allList.length; i++) {
-            //adding onclick attribute in all li tag
-            allList[i].setAttribute("onclick", "select(this)");
-        }
-    }else{
-        searchWrapper.classList.remove("active"); //hide autocomplete box
-    }
-}
+  const escapeHtml = (s) =>
+    s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-function select(element){
-    let selectData = element.textContent;
-    inputBox.value = selectData;
-    icon.onclick = ()=>{
-        webLink = `https://www.google.com/search?q=${selectData}`;
-        linkTag.setAttribute("href", webLink);
-        linkTag.click();
-    }
-    searchWrapper.classList.remove("active");
-}
+  document.querySelectorAll("input[data-autocomplete]").forEach((input) => {
+    const form = input.form;
+    const list = form.querySelector(".suggest");
+    let items = [];
+    let active = -1;
 
-function showSuggestions(list){
-    let listData;
-    if(!list.length){
-        userValue = inputBox.value;
-        listData = `<li>${userValue}</li>`;
-    }else{
-      listData = list.join('');
-    }
-    suggBox.innerHTML = listData;
-}
+    const close = () => { list.hidden = true; active = -1; };
+    const render = () => {
+      list.innerHTML = items
+        .map((t, i) => `<li role="option" data-i="${i}" aria-selected="${i === active}">${escapeHtml(t)}</li>`)
+        .join("");
+      list.hidden = items.length === 0;
+    };
+    const choose = (title) => { input.value = title; close(); form.submit(); };
+
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.addEventListener("focus", loadTitles, { once: true });
+    input.addEventListener("input", async () => {
+      const q = input.value.trim().toLowerCase();
+      if (q.length < 2) { items = []; close(); return; }
+      const titles = await loadTitles();
+      const starts = [], contains = [];
+      for (const t of titles) {
+        const l = t.toLowerCase();
+        if (l.startsWith(q)) starts.push(t);
+        else if (l.includes(q)) contains.push(t);
+        if (starts.length >= 8) break;
+      }
+      items = starts.concat(contains).slice(0, 8);
+      active = -1;
+      render();
+    });
+    input.addEventListener("keydown", (e) => {
+      if (list.hidden) return;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const n = items.length;
+        active = e.key === "ArrowDown" ? (active + 1) % n : (active - 1 + n) % n;
+        render();
+      } else if (e.key === "Enter" && active >= 0) {
+        e.preventDefault();
+        choose(items[active]);
+      } else if (e.key === "Escape") {
+        close();
+      }
+    });
+    list.addEventListener("mousedown", (e) => {
+      const li = e.target.closest("li");
+      if (li) { e.preventDefault(); choose(items[+li.dataset.i]); }
+    });
+    input.addEventListener("blur", () => setTimeout(close, 100));
+  });
+})();
